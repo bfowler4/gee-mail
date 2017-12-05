@@ -6,13 +6,70 @@
       window.onload = function(){
         // ALL OF YOUR JAVASCRIPT CODE SHOULD GO HERE. 
         // We have to use window.onload so your JavaScript doesn't execute until the page has loaded and all HTML has been downloaded to your browser
-        
+        function buildInbox() {
+        	var table = document.getElementById("inbox");
+        	for (var i = 0; i < window.geemails.length; i ++) {
+        		var row = table.insertRow(i + 1);
+        		var date = row.insertCell(0);
+        		var sender = row.insertCell(1);
+        		var subject = row.insertCell(2);
+        		date.innerHTML = window.geemails[i].date;
+        		sender.innerHTML = window.geemails[i].sender;
+        		subject.innerHTML = window.geemails[i].subject;
+        		var body = window.geemails[i].body;
+        		console.log(body);
+        		row.onclick = function() {
+        			alert(window.geemails[Math.floor(Math.random() * window.geemails.length)].body);
+        		};
+        	} 
+        }
+
+        function myTimer() {
+        	var message = getNewMessage();
+        	window.geemails.push(message);
+        	totalMessages ++;
+        	document.getElementById("messageCount").innerHTML = "Inbox (" + totalMessages + ")";
+        	addToInbox(message);
+        }
+
+        function addToInbox(message) {
+        	var table = document.getElementById("inbox");
+        	var row = table.insertRow(table.length);
+        	var date = row.insertCell(0);
+        	var sender = row.insertCell(1);
+        	var subject = row.insertCell(2);
+        	date.innerHTML = message.date;
+        	sender.innerHTML = message.sender;
+        	subject.innerHTML = message.subject;
+        	var body = message.body;
+        	row.onclick = function() {
+        		alert(body);
+        	}
+        }
+
+        buildInbox();
+        var totalMessages = window.geemails.length;
+        document.getElementById("messageCount").innerHTML = "Inbox (" + totalMessages + ")";
+        var interval = setInterval(myTimer, 5000);
+
+
+
       };
     </script>
 	</head>
 	<body>
+		<header>
+			<h1>Gee-mail</h1>
+			<h2 id="messageCount"></h2> 
+		</header>
 		<div class="container" id="main">
-			Build Me!
+			<table id="inbox">
+				<tr>
+					<th>Date</th>
+					<th>Sender</th>
+					<th>Subject</th>
+				</tr>
+			</table>
 		</div>
 	</body>
 </html>
